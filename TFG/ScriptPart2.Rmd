@@ -1,0 +1,153 @@
+---
+title: "ScriptPart2"
+author: "Clara Zaldivar"
+date: "11/2/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Instalem els paquets necessaris
+
+```{r}
+library("readxl")
+library('tseries')
+library('forecast')
+library("fBasics")
+library("ggplot2")
+library("neuralnet")
+install.packages("tidyverse")
+library(tidyverse)
+install.packages("tidymodels")
+library(tidymodels)
+install.packages("data.table")
+library(data.table)
+install.packages("tidyposterior")
+library(tidyposterior)
+install.packages("tsibble")
+library(tsibble)  #tsibble for time series based on tidy principles
+install.packages("fable")
+library(fable)  #for forecasting based on tidy principles
+install.packages("ggfortify")
+library(ggfortify)  #for plotting timeseries
+install.packages("chron")
+library(chron)
+install.packages("lubridate")
+library(lubridate)
+install.packages("zoo")
+library(zoo)
+install.packages("directlabels")
+library(directlabels)
+install.packages("lmtest")
+library(lmtest)
+install.packages("TTR")
+library(TTR)  #for smoothing the time series
+install.packages("MTS")
+library(MTS)
+install.packages("vars")
+library(vars)
+install.packages("fUnitRoots")
+library(fUnitRoots)
+install.packages("lattice")
+library(lattice)
+install.packages("grid")
+library(grid)
+library(scales)
+```
+
+```{r}
+library(ggthemes)
+library(forecast)
+#library(tidyverse)
+library(tseries)
+library(lubridate)
+install.packages("themetk")
+library(timetk)
+library(readxl)
+library(tidyquant)
+library(scales)
+library(forecast)   #  forecasting pkg
+library(sweep)   # Broom tidiers for forecast pkg
+library(broom)
+library(tibble)
+library(stringr)
+library(highcharter)
+library(knitr)
+```
+
+2. Carreguem les dades
+```{r}
+ccaa<-read.csv2("CCAA_gener.csv", stringsAsFactors = FALSE)
+sapply(tipologia, class)
+```
+
+Tipologia 
+
+TOTAL
+
+```{r}
+df<-data.frame( ccaa$TOTAL)
+df<-ts(df,start=2000.1,frequency=12)
+plot.ts(df,col=4)
+
+autoplot(df) + ggtitle("Total de turistes") + 
+        xlab("Any") + ylab("Nombre de turistes")
+```
+
+
+
+
+```{r}
+theme_set(theme_bw())
+autoplot(df) + ggtitle("Time Series Plot of the `APTelectricity' Time-Series") + 
+    theme(plot.title = element_text(hjust = 0.5))
+```
+
+Neural Network Auto-Regressive (NNAR) model
+
+Box Cox transformation with lambda 0.5
+
+```{r}
+fit <- nnetar(df, lambda="auto") 
+fit
+```
+NNAR(p,P,H)
+
+p=non seasonal
+P=seasonal
+
+```{r}
+fcast <- forecast(fit, PI=TRUE, h=3)
+fcast
+
+autoplot(fcast)
+```
+
+
+ERRORS
+```{r}
+febrer<-read.csv2("CCAA_febrer.csv", stringsAsFactors = FALSE)
+```
+
+manual
+```{r}
+errors<-febrer$TOTAL[241]-4284967	
+
+errors
+```
+auto
+
+
+
+
+
+LSTM 
+```{r}
+library(keras)
+library(tensorflow)
+```
+
+
+
